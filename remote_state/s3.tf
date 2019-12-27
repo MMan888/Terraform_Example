@@ -1,21 +1,26 @@
-resource "aws_s3_bucket" "log_bucket" {
-  bucket = "tf-log-bucket"
+# Create S3 bucket to contain server access logs relating to the other S3 bucket
+resource "aws_s3_bucket" "mm-log-bucket" {
+  bucket = "mm-tf-log-bucket"
   acl    = "log-delivery-write"
 }
 
-resource "aws_s3_bucket" "remote-s3-state-bucket" {
-  bucket = "remote-s3-state-bucket"
+# Create S3 bucket which will contain the Terraform remote backend state file
+resource "aws_s3_bucket" "mm-remote-s3-state-bucket" {
+  bucket = "mm-remote-s3-state-bucket"
   acl    = "private"
 
+# Enables versioning of the bucket
   versioning {
     enabled = true
   }
 
+# Enables server access logging (logs contained in above bucket)
   logging {
-    target_bucket = "${aws_s3_bucket.log_bucket.id}"
+    target_bucket = "mm-tf-log-bucket"
     target_prefix = "log/"
   }
 
+# Meta data tagging
   tags = {
     Name        = "remote_state"
     Environment = "Production"
