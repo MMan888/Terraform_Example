@@ -1,7 +1,10 @@
+# Example code to incorporate into your main Terraform code to use a remote state Terraform setup
+# Values reflect details defined in S3
+
 terraform {
   backend "s3" {
-    bucket = "state_bucket"         # Name of S3 bucket
-    key    = "production.tfstate"   # Location/path to terraform state file stored in S3
-    region = "eu-west-2"            # London
+    bucket = "mm-remote-s3-state-bucket"  # Name of S3 bucket
+    key    = "production.tfstate"         # Location/path to terraform state file stored in S3
+    region = "eu-west-2"                  # London
   }
 }
